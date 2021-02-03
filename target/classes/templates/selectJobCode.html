@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+	<h1>Time Sheet Submission</h1>
+
+
+	<form action="#" th:action="@{/add_timesheet}" th:object="${timesheet}"method="post">
+		<table border="1">
+		<tr>
+				<td>Site code:</td>
+				<td><input type="text" th:field="*{siteCode}" size="20"></td>
+				<td>Contractor Name:</td>
+				<td><input type="text" th:field="*{contractorName}" size="20"></td>
+				<td>Date:</td>
+				<td><input type="text" th:field="*{date}" size="20" /></td>
+			<tr>
+		</table>
+		<br/>
+		<h2>Labor Entry</h2>
+
+		<table border="1">
+		
+		 <thead>
+    <tr>
+      <th>Labor Code</th>
+      <th>Hours worked</th>
+      <th>Amount</th>
+      <th>
+              <button type="submit" name="addRow" >Add row</button>
+       <!--  <button type="submit" name="addRow" th:text="#{seedstarter.row.add}">Add row</button> -->
+      </th>
+    </tr>
+  </thead>
+   <tbody>
+    <tr th:each="row,rowStat : *{tslcs}">
+      
+      <td>
+      <!--   <select th:field="*{tslcs[__${rowStat.index}__].jbcode.jobCode}"   th:onchange="'javascript:selJobCCode(\''+ ${rowStat.index} +'\');'"> -->
+      
+           <select th:field="*{tslcs[__${rowStat.index}__].jbcode}"   th:onchange="'javascript:selJobCCode(\''+ ${rowStat.index} +'\');'">
+          <option th:each="jc:${jclist}" 
+                  th:value="${jc.jobCode}"
+				  th:text="${jc.description}"></option>
+        </select>
+      </td>
+      <td>
+        <input type="text" th:field="*{tslcs[__${rowStat.index}__].laborHoursWorked}" th:onchange="'javascript:selJobCCode(\''+ ${rowStat.index} +'\');'" />
+      </td>
+      <td>
+      <input type="text" th:field="*{tslcs[__${rowStat.index}__].amount}" />
+      </td>
+      <!-- <td>
+        <button type="submit" name="removeRow" 
+                th:value="${rowStat.index}" th:text="#{seedstarter.row.remove}">Remove row</button>
+      </td> -->
+    </tr>
+  </tbody>
+		
+	</table>
+	<br/>
+		<h2>Machine Entry</h2>
+
+		<table border="1">
+		
+		 <thead>
+    <tr>
+      <th>Machine Code</th>
+      <th>Hours Used</th>
+      <th>Amount</th>
+      <th>
+              <button type="submit" name="addmachineRow" >Add row</button>
+       <!--  <button type="submit" name="addRow" th:text="#{seedstarter.row.add}">Add row</button> -->
+      </th>
+    </tr>
+  </thead>
+   <tbody>
+    <tr th:each="row,rowStat : *{tsmcs}">
+      
+      <td>
+      <!--   <select th:field="*{tslcs[__${rowStat.index}__].jbcode.jobCode}"   th:onchange="'javascript:selJobCCode(\''+ ${rowStat.index} +'\');'"> -->
+      
+           <select th:field="*{tsmcs[__${rowStat.index}__].machinecode}"   th:onchange="'javascript:selMachineCode(\''+ ${rowStat.index} +'\');'">
+          <option th:each="mc:${mclist}" 
+                  th:value="${mc.machineCode}"
+				  th:text="${mc.description}"></option>
+        </select>
+      </td>
+      <td>
+        <input type="text" th:field="*{tsmcs[__${rowStat.index}__].hoursUsed}" th:onchange="'javascript:selMachineCode(\''+ ${rowStat.index} +'\');'" />
+      </td>
+      <td>
+      <input type="text" th:field="*{tsmcs[__${rowStat.index}__].machinecharge}" />
+      </td>
+      <!-- <td>
+        <button type="submit" name="removeRow" 
+                th:value="${rowStat.index}" th:text="#{seedstarter.row.remove}">Remove row</button>
+      </td> -->
+    </tr>
+  </tbody>
+		
+		</table>
+		<p>
+			<button type="submit" name="save">save</button>
+		</p>
+	</form>
+</body> 
+
+   <script th:inline="javascript">
+				/*<![CDATA[*/
+				function selJobCCode(row) {
+					var jcodlist = /*[[${jclist}]]*/null;
+					
+					
+					
+					var selectedIndex = document.getElementById('tslcs'+row+'.jbcode').selectedIndex;
+					var jco = jcodlist[selectedIndex];
+					document.getElementById('tslcs'+row+'.amount').value = jco.hourlyRate
+							* document.getElementById('tslcs'+row+'.laborHoursWorked').value;
+				};
+
+				function selMachineCode(row) {
+					var mcodlist = /*[[${mclist}]]*/null;
+					var selectedIndex = document.getElementById('tsmcs'+row+'.machinecode').selectedIndex;
+					var mco = mcodlist[selectedIndex];
+					document.getElementById('tsmcs'+row+'.machinecharge').value = mco.hourlyRent
+							* document.getElementById('tsmcs'+row+'.hoursUsed').value;
+				}
+				/*]]>*/
+			</script> 
+</html>

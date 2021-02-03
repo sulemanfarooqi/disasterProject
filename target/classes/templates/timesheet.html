@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Machine Management</title>
+</head>
+<style>
+	
+.topnav {
+  background-color: #333;
+  overflow: hidden;
+}
+
+/* Style the links inside the navigation bar */
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+/* Change the color of links on hover */
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+/* Add a color to the active/current link */
+.topnav a.active {
+  background-color: #4CAF50;
+  color: white;
+}
+
+	.styled-table {
+	    border-collapse: collapse;
+	    margin: 25px 0;
+	    font-size: 0.9em;
+	    font-family: sans-serif;
+	    min-width: 400px;
+	    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+	}
+	
+	.styled-table thead tr {
+    background-color: #009879;
+    color: #ffffff;
+    text-align: left;
+	}
+	
+	.styled-table th,
+	.styled-table td {
+    padding: 12px 15px;
+	}
+	
+	.styled-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+	}
+	
+	.styled-table tbody tr:nth-of-type(even) {
+	    background-color: #f3f3f3;
+	}
+	
+	.styled-table tbody tr:last-of-type {
+	    border-bottom: 2px solid #009879;
+	}
+	
+	.styled-table tbody tr.active-row {
+    font-weight: bold;
+    color: #009879;
+	}
+	
+	.signin {
+	 color: white;
+	 padding: 0px 50px 0px 100px;
+	}
+</style>
+
+<body>
+
+
+<div class="topnav">
+  <a href="/jobmanagement">Jobs</a>
+  <a href="/machinemanagement">Machines</a>
+  <a href="/add_timesheet">Add Timesheet</a>
+  <a href="/list_timesheet">Timecards</a>
+  <a href="/listtimesheetadmin">Approve Timesheets [ADMIN]</a>
+  <a href = "/logout"> Logout</a><br/>
+  <div class="signin" align="right">  <span th:text="${#authentication.getPrincipal().getUsername()}" align=></span></div>
+</div>
+
+<!-- Main Code-->
+<div class="main" align="center">
+	<h3>Time Sheet Submission</h3>
+	<form action="#" th:action="@{/add_timesheet}" th:object="${timesheet}"method="post">
+		<h3>Contractor Entry</h3>
+		<table class ="styled-table" border="1" cellpadding ="10">
+		<thead>
+			<tr>
+				<th>Site Code:</th>
+				<th></th>
+				<th>Contractor Name:</th>
+				<th></th>
+				<th>Date:</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+				<td>Site code:</td>
+				<td><input type="text" th:field="*{siteCode}" size="20"></td>
+				<td>Contractor Name:</td>
+				<td><input type="text" th:field="*{contractorName}" size="20"></td>
+				<td>Date:</td>
+				<td><input type="text" th:field="*{date}" size="20" /></td>
+			</tr>
+		</tbody>
+		</table>
+		<br/>
+		
+		
+		<h3>Labor Entry</h3>
+
+		<table class ="styled-table" border="1">
+		 <thead>
+    <tr>
+      <th>Labor Code</th>
+      <th>Hours worked</th>
+      <th>Amount</th>
+      <th>
+              <button type="submit" name="addRow" >Add row</button>
+       <!--  <button type="submit" name="addRow" th:text="#{seedstarter.row.add}">Add row</button> -->
+      </th>
+    </tr>
+  </thead>
+   <tbody>
+    <tr th:each="row,rowStat : *{tslcs}">
+      
+      <td>
+      <!--   <select th:field="*{tslcs[__${rowStat.index}__].jbcode.jobCode}"   th:onchange="'javascript:selJobCCode(\''+ ${rowStat.index} +'\');'"> -->
+      
+           <select th:field="*{tslcs[__${rowStat.index}__].jbcode}"   th:onchange="'javascript:selJobCCode(\''+ ${rowStat.index} +'\');'">
+          <option th:each="jc:${jclist}" 
+                  th:value="${jc.jobCode}"
+				  th:text="${jc.description}"></option>
+        </select>
+      </td>
+      <td>
+        <input type="text" th:field="*{tslcs[__${rowStat.index}__].laborHoursWorked}" th:onchange="'javascript:selJobCCode(\''+ ${rowStat.index} +'\');'" />
+      </td>
+      <td>
+      <input type="text" th:field="*{tslcs[__${rowStat.index}__].amount}" />
+      </td>
+      <!-- <td>
+        <button type="submit" name="removeRow" 
+                th:value="${rowStat.index}" th:text="#{seedstarter.row.remove}">Remove row</button>
+      </td> -->
+    </tr>
+  </tbody>
+		
+	</table>
+	<br/>
+		<h3>Machine Entry</h3>
+
+		<table class ="styled-table" border="1">
+		
+		 <thead>
+    <tr>
+      <th>Machine Code</th>
+      <th>Hours Used</th>
+      <th>Amount</th>
+      <th>
+              <button type="submit" name="addmachineRow" >Add row</button>
+       <!--  <button type="submit" name="addRow" th:text="#{seedstarter.row.add}">Add row</button> -->
+      </th>
+    </tr>
+  </thead>
+   <tbody>
+    <tr th:each="row,rowStat : *{tsmcs}">
+      
+      <td>
+      <!--   <select th:field="*{tslcs[__${rowStat.index}__].jbcode.jobCode}"   th:onchange="'javascript:selJobCCode(\''+ ${rowStat.index} +'\');'"> -->
+      
+           <select th:field="*{tsmcs[__${rowStat.index}__].machinecode}"   th:onchange="'javascript:selMachineCode(\''+ ${rowStat.index} +'\');'">
+          <option th:each="mc:${mclist}" 
+                  th:value="${mc.machineCode}"
+				  th:text="${mc.description}"></option>
+        </select>
+      </td>
+      <td>
+        <input type="text" th:field="*{tsmcs[__${rowStat.index}__].hoursUsed}" th:onchange="'javascript:selMachineCode(\''+ ${rowStat.index} +'\');'" />
+      </td>
+      <td>
+      <input type="text" th:field="*{tsmcs[__${rowStat.index}__].machinecharge}" />
+      </td>
+      <!-- <td>
+        <button type="submit" name="removeRow" 
+                th:value="${rowStat.index}" th:text="#{seedstarter.row.remove}">Remove row</button>
+      </td> -->
+    </tr>
+  </tbody>
+		
+		</table>
+		<p>
+			<button type="submit" name="save">save</button>
+		</p>
+	</form>
+</div>
+
+</body> 
+
+   <script th:inline="javascript">
+				/*<![CDATA[*/
+				function selJobCCode(row) {
+					var jcodlist = /*[[${jclist}]]*/null;
+					
+					
+					
+					var selectedIndex = document.getElementById('tslcs'+row+'.jbcode').selectedIndex;
+					var jco = jcodlist[selectedIndex];
+					document.getElementById('tslcs'+row+'.amount').value = jco.hourlyRate
+							* document.getElementById('tslcs'+row+'.laborHoursWorked').value;
+				};
+
+				function selMachineCode(row) {
+					var mcodlist = /*[[${mclist}]]*/null;
+					var selectedIndex = document.getElementById('tsmcs'+row+'.machinecode').selectedIndex;
+					var mco = mcodlist[selectedIndex];
+					document.getElementById('tsmcs'+row+'.machinecharge').value = mco.hourlyRent
+							* document.getElementById('tsmcs'+row+'.hoursUsed').value;
+				}
+				/*]]>*/
+			</script> 
+</html>
