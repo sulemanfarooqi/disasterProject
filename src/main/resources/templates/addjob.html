@@ -22,6 +22,14 @@
       <title>Create New Job</title>
    </head>
    <body>
+   
+   <!-- Side navigation -->
+<div class="sidenav">
+  <a href="/jobmanagement">Jobs</a>
+  <a href="/machinemanagement">Machines</a>
+  <a href="/list_timesheet">Timecards</a>
+</div>
+   
   
         <form class="form" action="#" th:action="@{/savejob}" th:object="${job}" method="post">
 			<h2>ADD NEW JOB</h2>

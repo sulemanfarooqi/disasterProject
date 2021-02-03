@@ -5,11 +5,35 @@
 <meta charset="ISO-8859-1">
 <title>Machine Management</title>
 </head>
-
 <style>
+	
+.topnav {
+  background-color: #333;
+  overflow: hidden;
+}
 
-	#body{ background-color:white
-	}
+/* Style the links inside the navigation bar */
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+/* Change the color of links on hover */
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+/* Add a color to the active/current link */
+.topnav a.active {
+  background-color: #4CAF50;
+  color: white;
+}
+
 	.styled-table {
 	    border-collapse: collapse;
 	    margin: 25px 0;
@@ -46,19 +70,30 @@
     font-weight: bold;
     color: #009879;
 	}
+	
+	.signin {
+	 color: white;
+	 padding: 0px 50px 0px 100px;
+	}
 </style>
 
 <body id="body">
-<div>
-<h3>Disaster Recovery Application: Timecard Submission</h3>
+
+<div class="topnav">
+  <a href="/jobmanagement">Jobs</a>
+  <a href="/machinemanagement">Machines</a>
+  <a href="/add_timesheet">Add Timesheet</a>
+  <a href="/list_timesheet">Timecards</a>
+  <a href="/listtimesheetadmin">Approve Timesheets [ADMIN]</a>
+  <a href = "/logout"> Logout</a><br/>
+  <div class="signin" align="right">  <span th:text="${#authentication.getPrincipal().getUsername()}" align=></span></div>
 </div>
-<div class ="left-pane" align ="left">
-<h3>Machine Management</h3>
-</div>
-<div align="right">
-<a href="/machine/add">Add New</a>
-<div id="tableBody" align="center">
-	<table class ="styled-table" border="1" cellpadding ="1">
+
+<!-- Page content -->
+<div class="main" align="center">
+
+<h2>Machine Management</h2>
+<table class ="styled-table" border="1" cellpadding ="1">
 		<thead>
 			<tr>
 				<th>Machine Code</th>
@@ -83,5 +118,6 @@
 	<table border ="1">
 	</table>
 </div>
+
 </body>
 </html>

@@ -252,22 +252,24 @@ public class ProjectController {
 		return "listTimeSheet";
 	}
 	
+	
+	//Changed to timesheet.html from selectJobCode.html
 	@RequestMapping(value="/add_timesheet", method=RequestMethod.POST, params={"addRow"})
 	public String addNewRows(@ModelAttribute("timesheet") TimeSheet ts, @ModelAttribute Dropdown dropdown) {
 		
 		System.out.println("in addRow");	
 		ts.getTslcs().add(new TsLaborCharge());
 		
-		return "selectJobCode" ;
+		return "timesheet" ;
 		
 		
 	}
 	
-	
+	//Changed to timesheet.html from selectJobCode.html
 	@RequestMapping(value="/add_timesheet", method=RequestMethod.POST, params={"addmachineRow"})
 	public String addNewMRows(@ModelAttribute("timesheet") TimeSheet ts, @ModelAttribute Dropdown dropdown) {
 		ts.getTsmcs().add(new TsMachineCharge());
-		return "selectJobCode" ;
+		return "timesheet" ;
 		
 	}
     
