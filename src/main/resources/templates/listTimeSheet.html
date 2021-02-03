@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style>
+		.styled-table {
+		    border-collapse: collapse;
+		    margin: 25px 0;
+		    font-size: 0.9em;
+		    font-family: sans-serif;
+		    min-width: 400px;
+		    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+		}
+		
+		.styled-table thead tr {
+	    background-color: #009879;
+	    color: #ffffff;
+	    text-align: left;
+		}
+		
+		.styled-table th,
+		.styled-table td {
+	    padding: 12px 15px;
+		}
+		
+		.styled-table tbody tr {
+	    border-bottom: 1px solid #dddddd;
+		}
+		
+		.styled-table tbody tr:nth-of-type(even) {
+		    background-color: #f3f3f3;
+		}
+		
+		.styled-table tbody tr:last-of-type {
+		    border-bottom: 2px solid #009879;
+		}
+		
+		.styled-table tbody tr.active-row {
+	    font-weight: bold;
+	    color: #009879;
+		}
+	</style>
+<meta charset="UTF-8">
+<title>Time Card Submissions</title>
+</head>
+<body>
+<body>
+<h1 align="center">Time Card List</h1>
+	<br />
+	<div align="center">
+		
+		<table class="styled-table" border="1" cellpadding="10">
+		<thead>
+			<tr>
+				<th>Site Code</th>
+				<th>Contractor Name</th>
+				<th>Total Hours</th>
+				<th>Total Amount</th>
+				<th>Approval Status</th>
+				
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="ts:${displaytslist}">
+				<td th:text="${ts.siteCode}"></td>
+				<td th:text="${ts.contractorName}"></td>
+				<td th:text="${ts.totalHoursWorked}"></td>
+				<td th:text="${ts.totalAmount}"></td>
+				<td th:text="${ts.approvalStatus}"><a th:href="@{'/ts/approve/' + ${ts.id}}"></a>Text</td>
+			</tr>
+		</tbody>
+	</table>
+	</div>
+
+</body>
+</body>
+</html>
