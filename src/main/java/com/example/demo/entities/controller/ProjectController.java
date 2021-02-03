@@ -3,6 +3,8 @@ package com.example.demo.entities.controller;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,8 +18,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.example.demo.entities.Dropdown;
 import com.example.demo.entities.JobCodeMngmnt;
 import com.example.demo.entities.MachineCodeMangmnt;
 import com.example.demo.entities.TimeSheet;
@@ -32,6 +36,7 @@ import com.example.demo.services.TimesheetServiceImpl;
 
 
 @Controller
+@SessionAttributes("dropdown")
 public class ProjectController {
 	@Autowired
 	private JobServiceImpl jobService;
@@ -44,6 +49,13 @@ public class ProjectController {
 	
 	@Autowired
 	private TimesheetServiceImpl tsServ;
+	
+	
+	@ModelAttribute
+	public Dropdown dropdown() {
+		   
+		return new Dropdown();
+	}
 	
 	@RequestMapping("/")
 	public String viewHomePage(Model model) {
@@ -199,13 +211,6 @@ public class ProjectController {
 	public String editTimesheet(@PathVariable("id") int id, @Validated TimeSheet ts, ModelMap model ) {
 		System.out.println(ts.getContractorName());
 		ts.setApprovalStatus("Approved");
-		//ts.setContractorName(ts.getContractorName());
-		//ts.setTotalAmount(ts.getTotalAmount());
-		//ts.setTotalHoursWorked(ts.getTotalHoursWorked());
-		//ts.setSiteCode(ts.getSiteCode());
-		
-		
-		
 		tsServ.get(id);
 	    tsServ.save(ts);
 	    
@@ -220,17 +225,7 @@ public class ProjectController {
 	public String saveTimeSheet(@ModelAttribute("timesheet") TimeSheet ts, BindingResult bindingrequest) {
 		
 		System.out.println("in save ts");
-//		
-//		if( bindingrequest.hasErrors()){
-//			List<ObjectError> errors = bindingrequest.getAllErrors();
-//			for(ObjectError o: errors) {
-//				System.out.println(o);
-//			}
-//			return "timesheet";
-//		}else {
-//			
-//			tsServ.save(ts);
-//		}
+
 		
 		//summation amount and hrs
 		List<TsLaborCharge>  tsl= ts.getTslcs();
@@ -258,23 +253,51 @@ public class ProjectController {
 	}
 	
 	@RequestMapping(value="/add_timesheet", method=RequestMethod.POST, params={"addRow"})
-	public String addNewRows(@ModelAttribute("timesheet") TimeSheet ts, Model model) {
+	public String addNewRows(@ModelAttribute("timesheet") TimeSheet ts, @ModelAttribute Dropdown dropdown) {
 		
 		System.out.println("in addRow");	
 		ts.getTslcs().add(new TsLaborCharge());
-		List<JobCodeMngmnt> list = jobService.listAll();
-		model.addAttribute("jclist",list);
-		return "timesheet" ;
+		
+		return "selectJobCode" ;
+		
+		
 	}
 	
 	
 	@RequestMapping(value="/add_timesheet", method=RequestMethod.POST, params={"addmachineRow"})
-	public String addNewMRows(@ModelAttribute("timesheet") TimeSheet ts, Model model) {
-		System.out.println("in machine  addRow");	
+	public String addNewMRows(@ModelAttribute("timesheet") TimeSheet ts, @ModelAttribute Dropdown dropdown) {
 		ts.getTsmcs().add(new TsMachineCharge());
-		List<MachineCodeMangmnt> mlist = machineService.listAll();
-		model.addAttribute("mclist", mlist);
-		return "timesheet" ;
+		return "selectJobCode" ;
+		
 	}
     
+	@RequestMapping("/listtimesheetadmin")
+	public String displayApprovalAdmin(Model model){
+		
+		System.out.println("in admin list");
+		List<TimeSheet> tslist = tsrepo.findAll();
+		model.addAttribute("displaytslist", tslist);
+		
+		TimeSheet ts1 = new TimeSheet();
+		model.addAttribute("searchts",ts1);
+		
+		return "listTimeSheetAdmin";
+		
+	}
+	
+	@RequestMapping(value="/listtimesheetadmin",method=RequestMethod.POST, params={"approve"})
+	public String updateApprove( Model model, HttpServletRequest req) {
+		
+		Integer tsId = Integer.valueOf(req.getParameter("approve"));
+		System.out.println("button triggered "+ tsId);
+		
+		TimeSheet ts = tsrepo.findById(tsId).get();
+		ts.setApprovalStatus("Finalized");
+		tsrepo.save(ts);
+		
+		List<TimeSheet> tslist = tsrepo.findAll();
+		model.addAttribute("displaytslist", tslist);
+		
+		return "listTimeSheetAdmin";
+	}
 }
