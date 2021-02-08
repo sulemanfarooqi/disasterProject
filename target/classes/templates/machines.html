@@ -109,7 +109,7 @@
 			<tr class="active-row" th:each="machine : ${listMachines}">
 				<td th:text="${machine.machineCode}">Job Code</td>
 				<td th:text="${machine.description}">Description</td>
-				<td th:text="${machine.hourlyRent}">Hourly Rate</td>
+				<td th:text="${machine.hourlyRent}">Hourly Rent</td>
 				<td th:text="${machine.maxHours}">Max Hours</td>
 				<td><a th:href="@{'/machine/edit/' + ${machine.id}}">Edit</a></td>
 				<td><a th:href="@{'/machine/delete/' + ${machine.id}}">Delete</a></td>

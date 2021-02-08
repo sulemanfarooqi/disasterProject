@@ -72,4 +72,8 @@ public class TimesheetServiceImpl implements TimesheetService{
 		
 	}
 
+	public List<TimeSheet> findAll() {
+		return timesheetrepo.findAll();
+	}
+
 }

@@ -59,6 +59,10 @@ public class JobServiceImpl implements JobService{
 		entity.setJobCode(job.getJobCode());
 		jobRepo.save(entity);
 	}
+
+	public List<JobCodeMngmnt> findAll() {
+		return jobRepo.findAll();
+	}
 	
 	
 	

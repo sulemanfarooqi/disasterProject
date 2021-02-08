@@ -10,7 +10,7 @@
 	<h1>Time Sheet Submission</h1>
 
 
-	<form action="#" th:action="@{/add_timesheet}" th:object="${timesheet}"method="post">
+	<form action="#" th:action="@{/add_timesheet}" th:object="${timesheet}" method="post">
 		<table border="1">
 		<tr>
 				<td>Site code:</td>
@@ -44,7 +44,7 @@
       <!--   <select th:field="*{tslcs[__${rowStat.index}__].jbcode.jobCode}"   th:onchange="'javascript:selJobCCode(\''+ ${rowStat.index} +'\');'"> -->
       
            <select th:field="*{tslcs[__${rowStat.index}__].jbcode}"   th:onchange="'javascript:selJobCCode(\''+ ${rowStat.index} +'\');'">
-          <option th:each="jc:${jclist}" 
+          <option th:each="jc:${dropdown.jclist}" 
                   th:value="${jc.jobCode}"
 				  th:text="${jc.description}"></option>
         </select>
@@ -86,7 +86,7 @@
       <!--   <select th:field="*{tslcs[__${rowStat.index}__].jbcode.jobCode}"   th:onchange="'javascript:selJobCCode(\''+ ${rowStat.index} +'\');'"> -->
       
            <select th:field="*{tsmcs[__${rowStat.index}__].machinecode}"   th:onchange="'javascript:selMachineCode(\''+ ${rowStat.index} +'\');'">
-          <option th:each="mc:${mclist}" 
+          <option th:each="mc:${dropdown.mclist}" 
                   th:value="${mc.machineCode}"
 				  th:text="${mc.description}"></option>
         </select>
@@ -114,10 +114,7 @@
    <script th:inline="javascript">
 				/*<![CDATA[*/
 				function selJobCCode(row) {
-					var jcodlist = /*[[${jclist}]]*/null;
-					
-					
-					
+					var jcodlist = /*[[${dropdown.jclist}]]*/null;				
 					var selectedIndex = document.getElementById('tslcs'+row+'.jbcode').selectedIndex;
 					var jco = jcodlist[selectedIndex];
 					document.getElementById('tslcs'+row+'.amount').value = jco.hourlyRate
@@ -125,7 +122,7 @@
 				};
 
 				function selMachineCode(row) {
-					var mcodlist = /*[[${mclist}]]*/null;
+					var mcodlist = /*[[${dropdown.mclist}]]*/null;
 					var selectedIndex = document.getElementById('tsmcs'+row+'.machinecode').selectedIndex;
 					var mco = mcodlist[selectedIndex];
 					document.getElementById('tsmcs'+row+'.machinecharge').value = mco.hourlyRent

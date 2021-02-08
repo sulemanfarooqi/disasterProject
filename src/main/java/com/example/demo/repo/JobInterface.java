@@ -13,4 +13,3 @@ public interface JobInterface extends JpaRepository<JobCodeMngmnt, Integer> {
 	JobCodeMngmnt findByJobCode(String jobcode);
 	JobCodeMngmnt findById(int id);
 }
-

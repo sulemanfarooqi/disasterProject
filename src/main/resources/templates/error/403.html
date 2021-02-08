@@ -74,7 +74,7 @@
 	}
 </style>
 <meta charset="ISO-8859-1">
-<title>Job Management</title>
+<title>Error 403: Forbidden Page</title>
 </head>
 <body>
 
@@ -92,30 +92,10 @@
 
 <!-- Page content -->
 <div class="main" align="center">
-<h2>Job Management</h2>
-<a href = "/machine/add">Add New Job</a><br/>
-<table class="styled-table" border="1" cellpadding ="10">
-		<thead>
-			<tr>
-				<th>Job Code</th>
-				<th>Description</th>
-				<th>Hourly Rate</th>
-				<th>Max Hours</th>
-				<th></th>
-				<th><th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr class="active-row" th:each="job : ${listJobs}">
-				<td th:text="${job.jobCode}">Job Code</td>
-				<td th:text="${job.description}">Description</td>
-				<td th:text="${job.hourlyRate}">Hourly Rate</td>
-				<td th:text="${job.maxHours}">Max Hours</td>
-				<td><a th:href="@{'/job/edit/' + ${job.id}}">Edit</a></td>
-				<td><a th:href="@{'/job/delete/' + ${job.id}}">Delete</a></td>
-			</tr>
-		</tbody>
-	</table>
+	<h2>Error 403: Forbidden Page</h2>
+
+	
+
 </div>
 
 </body>

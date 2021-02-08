@@ -44,5 +44,9 @@ public class MachineServiceImpl implements MachineService {
 		machineRepo.deleteById(id);
 	}
 
+	public List<MachineCodeMangmnt> findAll() {
+		return machineRepo.findAll();
+	}
+
 	
 }
